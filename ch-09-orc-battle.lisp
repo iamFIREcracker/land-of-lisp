@@ -72,6 +72,7 @@
          (fresh-line)
          (monster-hit (pick-monster) x)
          (unless (monsters-dead)
+           (fresh-line)
            (monster-hit (pick-monster) x))))
     (otherwise (dotimes (x (1+ (randval (truncate (/ *player-strength* 3)))))
                  (unless (monsters-dead)
