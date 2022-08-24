@@ -32,7 +32,7 @@
          (lambda (m)
            (or (monster-dead m) (monster-attack m)))
          *monsters*)
-    (update-swank)
+    #+swank (update-swank)
     (game-loop)))
 
 

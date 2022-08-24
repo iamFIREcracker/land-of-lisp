@@ -130,7 +130,7 @@
                        do (update-world)
                        if (zerop (mod i 1000)) do (progn (princ #\.) (force-output)))
                  (update-world))
-               (try-update-swank)
+               #+swank (update-swank)
                (evolution))))))
 
 #+#:excluded (evolution)

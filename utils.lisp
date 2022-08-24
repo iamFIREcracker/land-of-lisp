@@ -1,10 +1,10 @@
-(defun try-update-swank ()
-  "Called from within the main loop, this keep the lisp REPL working
+#+swank (defun update-swank ()
+          "Called from within the main loop, this keep the lisp REPL working
   while games run"
-  #+swank (continuable
-    (let ((conn (or swank::*emacs-connection* (swank::default-connection))))
-      (when conn
-        (swank::handle-requests conn t)))))
+          (continuable
+            (let ((conn (or swank::*emacs-connection* (swank::default-connection))))
+              (when conn
+                (swank::handle-requests conn t)))))
 
 (defmacro continuable (&body body)
   "Helper macro that we can use to allow us to continue from an
