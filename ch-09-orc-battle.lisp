@@ -90,16 +90,17 @@
       m)))
 
 (defun pick-monster ()
-  (fresh-line)
   (princ "Monster #:")
   (finish-output)
   (let ((x (read)))
     (if (not (and (integerp x) (>= x 1) (<= x *monsters-num*)))
       (progn (princ "That is not a valid monster number.")
+             (fresh-line)
              (pick-monster))
       (let ((m (aref *monsters* (1- x))))
         (if (monster-dead m)
           (progn (princ "That monster is already dead.")
+                 (fresh-line)
                  (pick-monster))
           m)))))
 
