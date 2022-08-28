@@ -1,3 +1,20 @@
+(defmacro => (form result)
+  "Run `form` and assert that whatever it returns is EQUALP with `result`"
+  (let ((aresult (gensym "result")))
+    `(let ((,aresult ,form))
+      (prog1 ,aresult
+        (assert (equalp ,aresult ,result))))))
+
+(defmacro *> (form output)
+  "Run `form` and assert that whatever output it generates is EQUAL with `result`"
+  (let ((aresult (gensym "result"))
+        (aoutput (gensym "output")))
+    `(let (,aresult)
+      (let ((,aoutput (with-output-to-string (*standard-output*)
+                        (setf ,aresult ,form))))
+        (prog1 ,aresult
+          (assert (equal ,aoutput ,output)))))))
+
 #+swank (defun update-swank ()
           "Called from within the main loop, this keep the lisp REPL working
   while games run"
