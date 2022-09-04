@@ -15,6 +15,11 @@
         (prog1 ,aresult
           (assert (equal ,aoutput ,output)))))))
 
+(defmacro !> (form error)
+  "Run `form` and assert that the error it signals is EQUAL with `error`"
+  `(handler-case ,form
+    (,error (condition) (format nil "~a" condition))))
+
 #+swank (defun update-swank ()
           "Called from within the main loop, this keep the lisp REPL working
   while games run"
