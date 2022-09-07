@@ -13,10 +13,10 @@
 ;; Repeated execution
 (defmacro bogus-split (val yes no)
   `(if ,val
-    (let ((head (car ,val))
-          (tail (cdr ,val)))
-      ,yes)
-    ,no))
+     (let ((head (car ,val))
+           (tail (cdr ,val)))
+       ,yes)
+     ,no))
 
 (*> (bogus-split '(2 3)
       (format t "This can be split into ~a and ~a." head tail)
@@ -45,11 +45,11 @@
 ;; Variable capture
 (defmacro bogus-split-1 (val yes no)
   `(let1 x ,val
-    (if x
-      (let ((head (car x))
-            (tail (cdr x)))
-        ,yes)
-      ,no)))
+     (if x
+       (let ((head (car x))
+             (tail (cdr x)))
+         ,yes)
+       ,no)))
 
 (*> (bogus-split-1 (progn (princ "Lisp rocks!")
                           '(2 3))
@@ -66,11 +66,11 @@
 (defmacro split (val yes no)
   (let1 g (gensym)
     `(let1 ,g ,val
-      (if ,g
-        (let ((head (car ,g))
-              (tail (cdr ,g)))
-          ,yes)
-        ,no))))
+       (if ,g
+         (let ((head (car ,g))
+               (tail (cdr ,g)))
+           ,yes)
+         ,no))))
 
 #+#:excluded (macroexpand '(split '(2 3)
                             (+ x head)
@@ -93,7 +93,7 @@
   (let1 p (pairs vars)
     `(labels ((self ,(mapcar #'car p)
                 ,@body))
-      (self ,@(mapcar #'cdr p)))))
+       (self ,@(mapcar #'cdr p)))))
 
 (*> (recurse (n 9)
       (fresh-line)

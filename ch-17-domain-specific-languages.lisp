@@ -22,8 +22,8 @@
                                        `(cons ',(car x) ,(cdr x)))
                                      (pairs atts)))
                      nil)
-    ,@body
-    (print-tag ',name nil t)))
+     ,@body
+     (print-tag ',name nil t)))
 
 (=> (macroexpand '(tag mytag (color 'blue height (+ 4 5))))
     '(progn (print-tag 'mytag
@@ -46,11 +46,11 @@
 ;; HTML
 (defmacro html (&body body)
   `(tag html ()
-    ,@body))
+     ,@body))
 
 (defmacro body (&body body)
   `(tag body ()
-    ,@body))
+     ,@body))
 
 (*> (html (body (princ "Hello World!")))
     "<html><body>Hello World!</body></html>")
@@ -195,7 +195,7 @@
                      (have ',subj))
               ,@body
               '(i cant ,command like that.)))
-    (pushnew ',command *allowed-commands*)))
+     (pushnew ',command *allowed-commands*)))
 
 
 (defparameter *chain-welded* nil)
