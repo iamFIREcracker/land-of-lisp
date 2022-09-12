@@ -128,4 +128,39 @@ $ curl --http0.9 http://localhost:8080/greeting
 <html><form>What is yourname?<input name='name'/></form></html>
 $ curl --http0.9 http://localhost:8080/greeting --data "name=matteo"
 <html>Nice to meet you, matteo!</html>
+
+alternatively, you can use the `clack` adapter below...
 |#
+
+(ql:quickload "clack")
+
+(defvar *handler* nil)
+
+(defun serve-start (request-handler)
+  (if *handler*
+    (error "Web server started already!")
+    (setf *handler* (clack:clackup (lambda (env)
+                                     (clack-handler env request-handler))
+                                   :port 8080))))
+
+(defun clack-handler (env request-handler)
+  (destructuring-bind (&key request-method request-uri headers raw-body &allow-other-keys) env
+    (let* ((url (parse-url (format nil "~a ~a HTTP/1.0" request-method request-uri)))
+           (path (car url))
+           (header (loop for k being the hash-key of headers using (hash-value v)
+                         collect (cons (intern (string-upcase k)) v)))
+           (params (append (cdr url)
+                           (get-content-params raw-body header)))
+           (output (with-output-to-string (*standard-output*)
+                     (funcall request-handler path header params))))
+      `(200
+         (:content-type "text/html; charset=UTF-8")
+         (,output)))))
+
+(defun serve-stop ()
+  (when *handler*
+    (prog1 (clack:stop *handler*)
+      (setf *handler* nil))))
+
+#+#:excluded (serve-start 'hello-request-handler)
+#+#:excluded (serve-stop)
